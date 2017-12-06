@@ -1,18 +1,27 @@
-module.exports = (name, desciption, bid, bidder, seller)=>{
+const connection = require('./db')
+
+function createProduct(name, desc, bid, bidder, seller) {
     
+    var query = connection.query(
+      "INSERT INTO items SET ?",
+      {
+        name: name,
+        desciption: desc,
+        bid: bid,
+        bidder: bidder,
+        seller, seller
+      },
+      function(err, res) {
+        if(err){
+            console.log(err);
+        }
+        console.log(res.affectedRows + " product inserted!\n");
+        connection.end();
+      }
+    );
 }
 
-var mysql = require("mysql");
-const {readFile} = require('fs');
+module.exports = createProduct;
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-
-  // Your username
-  user: "root",
-
-  // Your password
-  password: "",
-  database: "greatbay"
-});
+// example of use
+// createProduct("used comb", "a fancy metal comb", 50, "ben", "michelle");
